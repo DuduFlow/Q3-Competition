@@ -557,7 +557,11 @@
     const groupSummary = summary[group] || summarizeRows(rows);
     const source = payload.source ? String(payload.source).split("/").pop() : "Excel";
     const today = new Date().toLocaleDateString("zh-TW", { year: "numeric", month: "2-digit", day: "2-digit" });
-    const body = rows.map((r, i) => `<tr>
+    const reportClass = group === "新人組" ? "newcomer" : "personal";
+    const body = rows.map((r, i) => {
+      const statusClass = r.reach_qualified ? "ok" : "wait";
+      const rowClass = i < 3 ? "pdf-top-row" : "";
+      return `<tr class="${rowClass}">
       <td>${i + 1}</td>
       <td>${pdfCell(r.name)}</td>
       <td>${pdfCell(`${r.office_code} ${r.office_name}`)}</td>
@@ -566,17 +570,19 @@
       <td>${pdfMoney(r.jun_total)}</td>
       <td>${pdfMoney(r.personal_total)}</td>
       <td>${pdfMoney(r.contest_total)}</td>
-      <td>${pdfCell(r.reach_note)}</td>
+      <td><span class="pdf-badge ${statusClass}">${pdfCell(r.reach_note)}</span></td>
       <td>${pdfMoney(r.over_reward)}</td>
       <td>${pdfMoney(r.total_reward)}</td>
-    </tr>`).join("");
-    return `<section class="pdf-report">
+    </tr>`;
+    }).join("");
+    return `<section class="pdf-report pdf-report-${reportClass}">
       <div class="pdf-report-header">
         <div>
+          <div class="pdf-kicker">115 Q3 CONTEST</div>
           <h1>${esc(REPORT_TITLE)}｜${esc(group)}全體完整清單</h1>
           <div class="pdf-report-meta">${esc(REPORT_PERIOD)}｜資料來源：${esc(source)}｜輸出日：${esc(today)}</div>
         </div>
-        <div class="pdf-report-meta">A4 直式</div>
+        <div class="pdf-report-tag">A4 直式</div>
       </div>
       <div class="pdf-report-summary">
         <div><b>${groupSummary.count}</b><span>筆資料</span></div>

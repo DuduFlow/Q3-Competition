@@ -1912,6 +1912,12 @@ html:not(.grid-mode) body {
     background: #FFFFFF !important;
   }
 
+  body.pdf-exporting,
+  body.pdf-exporting * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   body.pdf-exporting .deck,
   body.pdf-exporting .ctrl-bar,
   body.pdf-exporting .lightbox {
@@ -1923,10 +1929,26 @@ html:not(.grid-mode) body {
   }
 
   body.pdf-exporting .pdf-report {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(297mm - 20mm);
+    border: 1px solid #D8E1EA;
+    border-radius: 3mm;
+    background:
+      linear-gradient(180deg, #F6FAFD 0, #FFFFFF 38mm),
+      #FFFFFF !important;
     color: #17212B;
     font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
     font-size: 8pt;
     line-height: 1.25;
+    padding: 0 0 4mm;
+  }
+
+  body.pdf-exporting .pdf-report::before {
+    content: "";
+    display: block;
+    height: 3mm;
+    background: linear-gradient(90deg, #0093C1, #30DAA2, #FFC94F, #FF8933) !important;
   }
 
   body.pdf-exporting .pdf-report-header {
@@ -1934,41 +1956,87 @@ html:not(.grid-mode) body {
     align-items: flex-start;
     justify-content: space-between;
     gap: 8mm;
-    border-bottom: 2px solid #122432;
-    padding-bottom: 4mm;
-    margin-bottom: 4mm;
+    margin: 0 0 4mm;
+    padding: 5mm 6mm;
+    background: linear-gradient(135deg, #102332, #0E7698) !important;
+    color: #FFFFFF;
   }
 
   body.pdf-exporting .pdf-report-header h1 {
     margin: 0 0 1.5mm;
-    color: #0B1720;
+    color: #FFFFFF !important;
     font-size: 16pt;
     line-height: 1.15;
+    letter-spacing: 0;
+  }
+
+  body.pdf-exporting .pdf-kicker {
+    margin-bottom: 1.5mm;
+    color: #FFC94F !important;
+    font-size: 7pt;
+    font-weight: 900;
+    letter-spacing: 0.14em;
   }
 
   body.pdf-exporting .pdf-report-meta {
-    color: #5E7084;
+    color: rgba(255,255,255,0.74) !important;
     font-size: 8pt;
     font-weight: 700;
+  }
+
+  body.pdf-exporting .pdf-report-tag {
+    flex: 0 0 auto;
+    border: 1px solid rgba(255,255,255,0.32);
+    border-radius: 99px;
+    padding: 1.5mm 3mm;
+    background: rgba(255,255,255,0.14) !important;
+    color: #FFFFFF !important;
+    font-size: 8pt;
+    font-weight: 900;
   }
 
   body.pdf-exporting .pdf-report-summary {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 2mm;
-    margin-bottom: 4mm;
+    margin: 0 6mm 4mm;
   }
 
   body.pdf-exporting .pdf-report-summary div {
+    position: relative;
+    overflow: hidden;
     border: 1px solid #D8E1EA;
     border-radius: 2mm;
-    padding: 2mm;
+    padding: 2.5mm 2.2mm;
+    background: #FFFFFF !important;
+    box-shadow: 0 1mm 3mm rgba(16,35,50,0.07);
+  }
+
+  body.pdf-exporting .pdf-report-summary div::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1mm;
+    background: #0093C1 !important;
+  }
+
+  body.pdf-exporting .pdf-report-summary div:nth-child(2)::before {
+    background: #30DAA2 !important;
+  }
+
+  body.pdf-exporting .pdf-report-summary div:nth-child(3)::before {
+    background: #FFC94F !important;
+  }
+
+  body.pdf-exporting .pdf-report-summary div:nth-child(4)::before,
+  body.pdf-exporting .pdf-report-summary div:nth-child(5)::before {
+    background: #FF8933 !important;
   }
 
   body.pdf-exporting .pdf-report-summary b {
     display: block;
     color: #0B1720;
-    font-size: 11pt;
+    font-size: 12pt;
     line-height: 1.1;
   }
 
@@ -1981,7 +2049,16 @@ html:not(.grid-mode) body {
   }
 
   body.pdf-exporting .pdf-report-table {
-    width: 100%;
+    margin: 0 6mm;
+    width: calc(100% - 12mm);
+    overflow: hidden;
+    border: 1px solid #D8E1EA;
+    border-radius: 2mm;
+    background: #FFFFFF !important;
+  }
+
+  body.pdf-exporting .pdf-report-table {
+    width: calc(100% - 12mm);
     border-collapse: collapse;
     table-layout: fixed;
   }
@@ -2007,6 +2084,41 @@ html:not(.grid-mode) body {
     text-align: right;
     vertical-align: middle;
     white-space: nowrap;
+  }
+
+  body.pdf-exporting .pdf-report-table tbody tr:nth-child(even) td {
+    background: #F7FAFC !important;
+  }
+
+  body.pdf-exporting .pdf-report-table tbody tr.pdf-top-row td {
+    background: #FFF8E4 !important;
+  }
+
+  body.pdf-exporting .pdf-report-table tbody tr.pdf-top-row td:first-child {
+    color: #B87300 !important;
+    font-weight: 900;
+  }
+
+  body.pdf-exporting .pdf-badge {
+    display: inline-block;
+    min-width: 14mm;
+    border-radius: 99px;
+    padding: 0.7mm 1.6mm;
+    font-size: 6.7pt;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  body.pdf-exporting .pdf-badge.ok {
+    background: #E8FAF3 !important;
+    color: #0D7F5D !important;
+    border: 1px solid #BFEFDD;
+  }
+
+  body.pdf-exporting .pdf-badge.wait {
+    background: #FFF0E6 !important;
+    color: #98531B !important;
+    border: 1px solid #FFD8BD;
   }
 
   body.pdf-exporting .pdf-report-table th:nth-child(1),
